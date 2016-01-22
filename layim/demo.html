@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link href="../Scripts/layim/css/font.css" rel="stylesheet" />
+    <link href="../Scripts/layim/css/layim.css" rel="stylesheet" />
+</head>
+<body>
+    <script src="../Scripts/jquery-1.10.2.min.js"></script>
+    <script src="../Scripts/jquery.signalR-2.1.2.min.js"></script>
+    <script src="http://localhost:20237/cs/hubs"></script>
+    <script src="../Scripts/singalr/client.hub.js"></script>
+    <script src="../Scripts/layim/layer.min.js"></script>
+    <script src="../Scripts/layim/layim.js"></script>
+
+    <script>
+        var hubConfig = {
+            serverUrl: 'http://localhost:20237/cs'
+        };
+        $(function () {
+            csClient.init({
+                serverUrl:hubConfig.serverUrl
+            });
+        });
+
+    </script>
+</body>
+</html>
