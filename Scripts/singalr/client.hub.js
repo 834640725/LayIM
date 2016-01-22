@@ -104,13 +104,16 @@
         },
         handleCustomMsg: function (result) {
             var log = {};
-            var keys = 'one' + result.touser.userid;//接收人
+            //接收人
+            var keys = 'one' + result.touser.userid;
+            //发送人
             var keys1 = 'one' + result.fromuser.userid;
-            //拿到消息存储
+            //这里一定要注意，这个keys是会变的，也就是说，如果只取一个的话，会造成 log.imarea[0]为undefined的情况，至于为什么会变，看看代码好好思考一下吧
             log.imarea = $('#layim_area' + keys);//layim_areaone0
             if (!log.imarea.length) {
                 log.imarea = $('#layim_area' + keys1);//layim_areaone0
             }
+            //拼接html模板
             log.html = function (param, type) {
                 return '<li class="' + (type === 'me' ? 'layim_chateme' : '') + '">'
                     + '<div class="layim_chatuser">'
@@ -131,13 +134,14 @@
             };
             //上述代码还是layim里的代码，只不过拼接html的时候，参数采用signalR返回的参数
             var type = result.fromuser.userid == currentUser.id ? "me" : "";//如果发送人的id==当前用户的id，那么这条消息类型为me
-            //拼接url
+            //拼接html 直接调用layim里的代码
             log.imarea.append(log.html({
                 time: result.addtime,
                 name: result.fromuser.username,
                 face: result.fromuser.photo,
                 content: result.msg
             }, type));
+            //滚动条处理
             log.imarea.scrollTop(log.imarea[0].scrollHeight);
         },
         isConnected: function (rid) {

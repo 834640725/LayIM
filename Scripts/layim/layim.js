@@ -508,9 +508,11 @@
         config.chatings = 0;
         node.list.on('click', '.xxim_childnode', function () {
             var othis = $(this);
+            //当前登录用户id
             var currentid = config.user.id;
+            //取得被点击的用户id
             var receiveid = othis.data('id');
-            console.log(currentid + "---" + receiveid);
+            //调用signalR封装的方法，连接服务器，将发送人id，接收人id传给后台，当前用户加入组
             csClient.server.ctoc(currentid, receiveid);
             xxim.popchatbox(othis);
         });
