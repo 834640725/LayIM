@@ -15,7 +15,7 @@
         aniTime: 200,
         right: -232,
         api: {
-            friend: '/getdataWebService.asmx/GetResult',//'/getdata?type=friend',//'/getdata?type=friend', //好友列表接口
+            friend: '/getdata?type=friend', //好友列表接口
             group: '/getdata?type=group', //群组列表接口
             chatlog: '/getdata?type=log', //聊天记录接口
             groups: '/getdata?type=groups', //群组成员接口

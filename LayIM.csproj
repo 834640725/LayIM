@@ -170,6 +170,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="apis\getdata.ashx.cs">
+      <DependentUpon>getdata.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="apis\getdataWebService.asmx.cs">
+      <DependentUpon>getdataWebService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="BLL\DBHelper.cs" />
     <Compile Include="BLL\MessageUtilcs.cs" />
@@ -177,13 +184,6 @@
     <Compile Include="Controllers\CustomServiceController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="getdata.ashx.cs">
-      <DependentUpon>getdata.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="getdataWebService.asmx.cs">
-      <DependentUpon>getdataWebService.asmx</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Hub\CustomServiceHub.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -195,8 +195,8 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="apis\getdataWebService.asmx" />
     <Content Include="favicon.ico" />
-    <Content Include="getdataWebService.asmx" />
     <Content Include="Global.asax" />
     <Content Include="layim\demo.html" />
     <Content Include="photos\000.jpg" />
@@ -217,7 +217,7 @@
     <Content Include="Scripts\jquery.signalR-2.1.2.js" />
     <Content Include="Scripts\jquery.signalR-2.1.2.min.js" />
     <Content Include="Scripts\layim\css\font.css" />
-    <Content Include="getdata.ashx" />
+    <Content Include="apis\getdata.ashx" />
     <None Include="Scripts\layim\groups.json" />
     <Content Include="images\0.jpg" />
     <Content Include="images\default.jpg" />
