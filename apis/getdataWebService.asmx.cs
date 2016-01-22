@@ -24,7 +24,7 @@ namespace LayIM
         {
             //调用业务处理方法获取数据结果
             var result = DBHelper.GetResult(type);
-            var json = MessageUtilcs.ScriptSerialize(result);
+            var json = MessageUtils.ScriptSerialize(result);
             return json;
         }
     }

@@ -8,6 +8,7 @@ namespace LayIM.BLL
 {
     public class DBHelper
     {
+        private static string[] names = new string[] { "痴玉", "书筠", "诗冬", "飞枫", "盼玉", "靖菡", "宛雁", "之卉", "凡晴", "书枫", "沛梦" };
         /// <summary>
         /// 获取好友列表
         /// </summary>
@@ -16,14 +17,14 @@ namespace LayIM.BLL
         {
             var friends = new List<CSBaseModel>();
             for (int i = 0; i < 9; i++) {
-                friends.Add(new CSFriend { id = i, name = "好友" + i, face = "/photos/00" + i + ".jpg" });
+                friends.Add(new CSFriend { id = i + 10000, name = names[i], face = "/photos/00" + i + ".jpg" });
             }
 
             var friendGroup = new List<CSGroupResult>();
 
-            friendGroup.Add(new CSGroupResult { id = 1, item = friends, name = "我的分组一" });
-            friendGroup.Add(new CSGroupResult { id = 2, item = friends, name = "我的分组二" });
-            friendGroup.Add(new CSGroupResult { id = 3, item = friends, name = "我的分组三" });
+            friendGroup.Add(new CSGroupResult { id = 1, item = friends, name = "C#研发后台组" });
+            //friendGroup.Add(new CSGroupResult { id = 2, item = friends, name = "JS研发前端组" });
+            //friendGroup.Add(new CSGroupResult { id = 3, item = friends, name = "IOS研发移动组" });
 
             CSResult result = new CSResult
             {

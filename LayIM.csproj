@@ -179,7 +179,8 @@
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="BLL\DBHelper.cs" />
-    <Compile Include="BLL\MessageUtilcs.cs" />
+    <Compile Include="BLL\MessageConfig.cs" />
+    <Compile Include="BLL\MessageUtils.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CustomServiceController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -188,9 +189,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Model\CSChatMessage.cs" />
     <Compile Include="Model\CSFriend.cs" />
     <Compile Include="Model\CSGroup.cs" />
+    <Compile Include="Model\CSMessageType.cs" />
     <Compile Include="Model\CSResult.cs" />
+    <Compile Include="Model\CSUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -212,6 +216,7 @@
     <Content Include="photos\010.jpg" />
     <Content Include="photos\011.jpg" />
     <Content Include="photos\012.jpg" />
+    <Content Include="photos\sys.png" />
     <Content Include="read.txt" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery.signalR-2.1.2.js" />

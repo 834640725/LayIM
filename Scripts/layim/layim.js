@@ -6,10 +6,13 @@
 
  */
 
-; !function (win, undefined) {
 
+; !function (win, undefined) {
+    //////////////////////////////自动生成当前用户
+    hubConfig.currentUser = getRandomUser();
+    /////////////////////////////自动生成当前用户
     var config = {
-        apitype:'ws',//ws 如果是ws说明是webservice，那么就调用config.json_ws方法请求webservice
+        apitype:'json',//ws 如果是ws说明是webservice，那么就调用config.json_ws方法请求webservice
         msgurl: 'mailbox.html?msg=',
         chatlogurl: 'mailbox.html?user=',
         aniTime: 200,
@@ -22,8 +25,9 @@
             sendurl: '' //发送消息接口
         },
         user: { //当前用户信息
-            name: '游客',
-            face: '/images/default.jpg'
+            id: hubConfig.currentUser.id,
+            name: hubConfig.currentUser.name,
+            face: hubConfig.currentUser.photo
         },
 
         //自动回复内置文案，也可动态读取数据库配置
@@ -419,53 +423,12 @@
             } else {
                 //此处皆为模拟
                 var keys = xxim.nowchat.type + xxim.nowchat.id;
-
+                console.log("keys=" + keys);
                 //聊天模版
-                log.html = function (param, type) {
-                    return '<li class="' + (type === 'me' ? 'layim_chateme' : '') + '">'
-                        + '<div class="layim_chatuser">'
-                            + function () {
-                                if (type === 'me') {
-                                    return '<span class="layim_chattime">' + param.time + '</span>'
-                                           + '<span class="layim_chatname">' + param.name + '</span>'
-                                           + '<img src="' + param.face + '" >';
-                                } else {
-                                    return '<img src="' + param.face + '" >'
-                                           + '<span class="layim_chatname">' + param.name + '</span>'
-                                           + '<span class="layim_chattime">' + param.time + '</span>';
-                                }
-                            }()
-                        + '</div>'
-                        + '<div class="layim_chatsay">' + param.content + '<em class="layim_zero"></em></div>'
-                    + '</li>';
-                };
-
-                log.imarea = xxim.chatbox.find('#layim_area' + keys);
-
-                log.imarea.append(log.html({
-                    time: '2014-04-26 0:37',
-                    name: config.user.name,
-                    face: config.user.face,
-                    content: data.content
-                }, 'me'));
                 node.imwrite.val('').focus();
-                log.imarea.scrollTop(log.imarea[0].scrollHeight);
-
-                setTimeout(function () {
-                    log.imarea.append(log.html({
-                        time: '2014-04-26 0:38',
-                        name: xxim.nowchat.name,
-                        face: xxim.nowchat.face,
-                        content: config.autoReplay[(Math.random() * config.autoReplay.length) | 0]
-                    }));
-                    log.imarea.scrollTop(log.imarea[0].scrollHeight);
-                }, 500);
-
-                /*
-                that.json(config.api.sendurl, data, function(datas){
-    
-                });
-                */
+                //这里增加singalR发送消息流程，目前先采用回调将自己的消息添加上去
+                csClient.server.ctocsend(data.content, config.user.id, config.user.name, config.user.face, xxim.nowchat.id);
+                //这里需要删除所有其他处理聊天信息的代码，在singalR回调中处理
             }
 
         };
@@ -545,6 +508,10 @@
         config.chatings = 0;
         node.list.on('click', '.xxim_childnode', function () {
             var othis = $(this);
+            var currentid = config.user.id;
+            var receiveid = othis.data('id');
+            console.log(currentid + "---" + receiveid);
+            csClient.server.ctoc(currentid, receiveid);
             xxim.popchatbox(othis);
         });
 
@@ -566,12 +533,12 @@
     xxim.getDates = function (index) {
         var api = [config.api.friend, config.api.group, config.api.chatlog],
             node = xxim.node, myf = node.list.eq(index);
-        var apiData = ['{"type":"friend"}', '{"type":"group"}', '{"type":"group"}', '{"type":"log"}'];
+        var apiData = ['{"type":"friend"}', '{"type":"group"}', '{"type":"log"}', '{"type":"groups"}'];
         myf.addClass('loading');
-        config.json(api[index], apiData[index], function (datas) {
+        config.json(api[index], (config.apitype == "wx" ? apiData[index] : {}), function (datas) {
             if (datas.status === 1) {
                 var i = 0, myflen = datas.data.length, str = '', item;
-                if (myflen > 1) {
+                if (myflen > 0) {//这里之前是个bug，应该是 myflen>0
                     if (index !== 2) {
                         for (; i < myflen; i++) {
                             str += '<li data-id="' + datas.data[i].id + '" class="xxim_parentnode">'
@@ -579,6 +546,7 @@
                                 + '<ul class="xxim_chatlist">';
                             item = datas.data[i].item;
                             for (var j = 0; j < item.length; j++) {
+                                if (item[j].id === config.user.id) { continue; }//如果好友列表里面存在当前用户，那么就直接跳过
                                 str += '<li data-id="' + item[j].id + '" class="xxim_childnode" type="' + (index === 0 ? 'one' : 'group') + '"><img src="' + item[j].face + '" class="xxim_oneface"><span class="xxim_onename">' + item[j].name + '</span></li>';
                             }
                             str += '</ul></li>';
@@ -643,6 +611,8 @@
         xxim.event();
         xxim.layinit();
     }());
-
+    //将currentUser公开到外部
+    var currentUser = config.user;
+    window.currentUser = currentUser;
 }(window);
 
