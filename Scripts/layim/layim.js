@@ -517,8 +517,15 @@
            
             //调用signalR封装的方法，连接服务器，将发送人id，接收人id传给后台，当前用户加入组
             /*新改，由于区分单个聊天和群组聊天，所以这里将type传进去*/
-            csClient.server.ctoc(currentid, receiveid,type);
+            csClient.server.ctoc(currentid, receiveid, type);
+            //弹出聊天窗口
             xxim.popchatbox(othis);
+            //初始化QQ表情
+            $('.layim_addface').qqFace({
+                id: 'facebox', //表情盒子的ID
+                assign: 'layim_write', //给那个控件赋值
+                path: '/scripts/qq/face/'	//表情存放的路径
+            });
         });
 
         //点击最小化栏
@@ -533,6 +540,7 @@
             node.setonline.hide();
             $('#layim_sendtype').hide();
         });
+       
     };
 
     //请求列表数据

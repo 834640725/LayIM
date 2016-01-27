@@ -3,11 +3,27 @@
 <head>
     <link href="../Scripts/layim/css/font.css" rel="stylesheet" />
     <link href="../Scripts/layim/css/layim.css" rel="stylesheet" />
+    <style>
+        .comment{width:680px; margin:20px auto; position:relative}
+.comment h3{height:28px; line-height:28px}
+.com_form{width:100%; position:relative}
+.input{width:99%; height:60px; border:1px solid #ccc}
+.com_form p{height:28px; line-height:28px; position:relative}
+span.emotion{width:42px; height:20px; background:url(icon.gif) no-repeat 2px 2px; padding-left:20px; cursor:pointer}
+span.emotion:hover{background-position:2px -28px}
+.qqFace{margin-top:4px;background:#fff;padding:2px;border:1px #dfe6f6 solid;}
+.qqFace table td{padding:0px;}
+.qqFace table td img{cursor:pointer;border:1px #fff solid;}
+.qqFace table td img:hover{border:1px #0066cc solid;}
+#show{width:680px; margin:20px auto}
+
+    </style>
 </head>
 <body>
     <script src="../Scripts/jquery-1.10.2.min.js"></script>
     <script src="../Scripts/jquery.signalR-2.1.2.min.js"></script>
     <script src="http://localhost:20237/cs/hubs"></script>
+    <script src="../Scripts/qq/jquery.qqFace.js"></script>
     <script src="../Scripts/singalr/client.hub.js"></script>
     <script>
         var hubConfig = {
@@ -17,7 +33,7 @@
         $(function () {
             csClient.init({
                 serverUrl:hubConfig.serverUrl
-            });
+            });
         });
 
         /*
@@ -55,6 +71,14 @@
             set: function (key, value) {
                 localStorage.setItem(key, value);
             }
+        }
+
+        function replace_em(str) {
+            str = str.replace(/\</g, '&lt;');
+            str = str.replace(/\>/g, '&gt;');
+            str = str.replace(/\n/g, '<br/>');
+            str = str.replace(/\[em_([0-9]*)\]/g, '<img src="/scripts/qq/face/$1.gif" border="0" />');
+            return str;
         }
     </script>
     <script src="../Scripts/layim/layer.min.js"></script>

@@ -80,6 +80,7 @@
                     console.log("用户 " + rid + "已经连接过了，不需要连接了...");
                 }
             },
+            //发送，增加最后一个参数t， one ，group 群聊还是单体聊天
             send: function (msg, userid, username, userphoto, rid, t) {
                 var obj = {
                     msg: msg,
@@ -166,7 +167,7 @@
                 time: result.addtime,
                 name: result.fromuser.username,
                 face: result.fromuser.photo,
-                content: result.msg
+                content: replace_em(result.msg)
             }, type));
             //滚动条处理
             log.imarea.scrollTop(log.imarea[0].scrollHeight);

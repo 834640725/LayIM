@@ -231,6 +231,7 @@
     <Content Include="Scripts\layim\loading.gif" />
     <Content Include="Scripts\layim\skin\layer.css" />
     <Content Include="Scripts\layim\skin\xubox_ico0.png" />
+    <Content Include="Scripts\qq\jquery.qqFace.js" />
     <Content Include="Scripts\singalr\client.hub.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
@@ -276,6 +277,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\qq\face\" />
     <Folder Include="Views\CustomService\" />
   </ItemGroup>
   <ItemGroup>
