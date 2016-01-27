@@ -31,6 +31,15 @@ namespace LayIM.BLL
             return string.Format("G{0}{1}", sendid, receiveid);
         }
 
+        /// <summary>
+        /// 连接组织，加上前缀，防止和单聊冲突
+        /// </summary>
+        /// <param name="groupid"></param>
+        /// <returns></returns>
+        public static string GetGroupName(string groupid)
+        {
+            return string.Format("GROUP_{0}", groupid);
+        }
         #region 消息处理
 
         public static CSUser GetSystemUser(string groupName)

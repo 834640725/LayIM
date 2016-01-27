@@ -64,29 +64,52 @@
                 });
             },
             //单人聊天
-            ctoc: function (sid, rid) {
+            ctoc: function (sid, rid,t) {
                 //调用hub的clientToClient方法
-                if (!chat.isConnected(rid)) {
+                if (!chat.isConnected(rid,t)) {
                     //如果没有连接过，进行连接
                     console.log("用户 " + rid + "没有连接过...");
-                    _this.proxy.proxyCS.server.clientToClient(sid, rid);
+                    if (t == 'one') {
+                        //一对一聊天连接服务器
+                        _this.proxy.proxyCS.server.clientToClient(sid, rid);
+                    } else {
+                        //一对多（群组）聊天连接服务器
+                        _this.proxy.proxyCS.server.clientToGroup(sid, rid);
+                    }
                 } else {
                     console.log("用户 " + rid + "已经连接过了，不需要连接了...");
                 }
             },
-            ctocsend: function (msg, userid, username, userphoto,rid) {
-                var sendObj = {
+            send: function (msg, userid, username, userphoto, rid, t) {
+                var obj = {
                     msg: msg,
                     fromuser: {
                         userid: userid,
                         username: username,
-                        photo:userphoto
+                        photo: userphoto
                     },
                     touser: {
-                        userid:rid
+                        userid: rid
                     }
                 };
+                switch (t) {
+                    case 'one':
+                        this.ctocsend(obj);
+                        break;
+                    case 'group':
+                        this.ctogsend(obj);
+                        break;
+                    default:
+                        alert('无效的消息类型');
+                }
+            },
+            //单独
+            ctocsend: function (sendObj) {
                 _this.proxy.proxyCS.server.clientSendMsgToClient(sendObj);
+            },
+            //群组
+            ctogsend: function (sendObj) {
+                _this.proxy.proxyCS.server.clientSendMsgToGroup(sendObj);
             },
             //连接成功之后回调
             connectCallBack: function (result) {
@@ -98,16 +121,20 @@
     //聊天信息处理
     var chat = {
         cache: {},
+        cacheGroup:{},
         handleSystemMsg: function (result) {
-            var groupname = result.fromuser.groupname;//连接成功的组，如果已经连接成功，那么没有必要下次点击再次连接
-            this.cache[result.other.receiveid] = "ok";//代表我已经和当前聊天人已经连接上了，下次点击没必要再次连接
+            if (result.other.t == 'one') {
+                this.cache[result.other.receiveid] = "ok";//代表我已经和当前聊天人已经连接上了，下次点击没必要再次连接
+            } else {
+                this.cacheGroup[result.other.receiveid] = "ok";
+            }
         },
         handleCustomMsg: function (result) {
             var log = {};
             //接收人
-            var keys = 'one' + result.touser.userid;
+            var keys = result.other.t + result.touser.userid;
             //发送人
-            var keys1 = 'one' + result.fromuser.userid;
+            var keys1 = result.other.t + result.fromuser.userid;
             //这里一定要注意，这个keys是会变的，也就是说，如果只取一个的话，会造成 log.imarea[0]为undefined的情况，至于为什么会变，看看代码好好思考一下吧
             log.imarea = $('#layim_area' + keys);//layim_areaone0
             if (!log.imarea.length) {
@@ -144,8 +171,16 @@
             //滚动条处理
             log.imarea.scrollTop(log.imarea[0].scrollHeight);
         },
-        isConnected: function (rid) {
-            return this.cache[rid] === "ok";
+        isConnected: function (rid, t) {
+            ///单人聊天
+            if (t == 'one') {
+                console.log(this.cache);
+                return this.cache[rid] === "ok";
+            }
+            //群组聊天
+            if (t == 'group') {
+                return this.cacheGroup[rid] === "ok";
+            }
         }
     };
     _this.chat = chat;

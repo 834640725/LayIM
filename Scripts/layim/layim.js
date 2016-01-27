@@ -423,11 +423,12 @@
             } else {
                 //此处皆为模拟
                 var keys = xxim.nowchat.type + xxim.nowchat.id;
-                console.log("keys=" + keys);
+                var t = xxim.nowchat.type;//当前的聊天类型  one  group
+                var id = xxim.nowchat.id;//当前的聊天对象，如果是我one，接收人就是id 如果是我群组，那么id为群组id
                 //聊天模版
                 node.imwrite.val('').focus();
                 //这里增加singalR发送消息流程，目前先采用回调将自己的消息添加上去
-                csClient.server.ctocsend(data.content, config.user.id, config.user.name, config.user.face, xxim.nowchat.id);
+                csClient.server.send(data.content, config.user.id, config.user.name, config.user.face, id, t);
                 //这里需要删除所有其他处理聊天信息的代码，在singalR回调中处理
             }
 
@@ -508,12 +509,15 @@
         config.chatings = 0;
         node.list.on('click', '.xxim_childnode', function () {
             var othis = $(this);
+            var type = othis.attr('type');
             //当前登录用户id
             var currentid = config.user.id;
             //取得被点击的用户id
             var receiveid = othis.data('id');
+           
             //调用signalR封装的方法，连接服务器，将发送人id，接收人id传给后台，当前用户加入组
-            csClient.server.ctoc(currentid, receiveid);
+            /*新改，由于区分单个聊天和群组聊天，所以这里将type传进去*/
+            csClient.server.ctoc(currentid, receiveid,type);
             xxim.popchatbox(othis);
         });
 

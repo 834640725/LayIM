@@ -42,7 +42,24 @@ namespace LayIM
             //将当前用户添加到此组织内
             Groups.Add(CurrentUserConnectionId, groupName);
             //构建系统连接成功消息
-            var msg = MessageUtils.GetSystemMessage(groupName, MessageConfig.ClientToClientConnectedSucceed, new { currentid = sendid, receiveid = receiveid });
+            var msg = MessageUtils.GetSystemMessage(groupName, MessageConfig.ClientToClientConnectedSucceed, new { t = MessageConfig.ClientTypeCTC, currentid = sendid, receiveid = receiveid });
+            //将消息推送到当前组 （A和B聊天的组） 同样调用receiveMessage方法
+            return Clients.Caller.receiveMessage(msg);
+        }
+
+        /// <summary>
+        /// 人对组聊天，连接服务器
+        /// </summary>
+        /// <param name="sendid">当前用户id</param>
+        /// <param name="groupid">当前群组id</param>
+        /// <returns></returns>
+        public Task ClientToGroup(string sendid, string groupid)
+        {
+            if (sendid == null || groupid == null) { throw new ArgumentNullException("sendid or groupid can't be null"); }
+            string groupName = MessageUtils.GetGroupName(groupid);
+            Groups.Add(CurrentUserConnectionId, groupName);
+            //构建系统连接成功消息
+            var msg = MessageUtils.GetSystemMessage(groupName, MessageConfig.ClientToGroupConnectedSucceed, new { t = MessageConfig.ClientTypeCTG, currentid = sendid, receiveid = groupid });
             //将消息推送到当前组 （A和B聊天的组） 同样调用receiveMessage方法
             return Clients.Caller.receiveMessage(msg);
         }
@@ -58,7 +75,24 @@ namespace LayIM
             /*
             中间处理一下消息直接转发给（A,B所在组织，即聊天窗口）
             */
+            msg.other = new { t = MessageConfig.ClientTypeCTC };
             msg.msgtype = CSMessageType.Custom;//消息类型为普通消息
+            return Clients.Group(groupName).receiveMessage(msg);
+        }
+
+        /// <summary>
+        /// 发送消息 （群组），服务器接收的是CSChatMessage实体，他包含发送人，接收人，消息内容等信息
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        public Task ClientSendMsgToGroup(CSChatMessage msg)
+        {
+            //获取要推送的组织名称
+            var groupName = MessageUtils.GetGroupName(msg.touser.userid.ToString());
+            //附加信息，为群信息
+            msg.other = new { t = MessageConfig.ClientTypeCTG };
+            //普通信息类型
+            msg.msgtype = CSMessageType.Custom;
             return Clients.Group(groupName).receiveMessage(msg);
         }
     }
