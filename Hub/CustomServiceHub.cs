@@ -42,8 +42,12 @@ namespace LayIM
             //将当前用户添加到此组织内
             Groups.Add(CurrentUserConnectionId, groupName);
             //构建系统连接成功消息
-            var msg = MessageUtils.GetSystemMessage(groupName, MessageConfig.ClientToClientConnectedSucceed, new { t = MessageConfig.ClientTypeCTC, currentid = sendid, receiveid = receiveid });
+            //读取历史记录 --- 2016-3-7 修改
+            var historyMsg = MessageUtils.GetHistoryMessage(sendid, receiveid);
+
+            var msg = MessageUtils.GetSystemMessage(groupName, MessageConfig.ClientToClientConnectedSucceed, new { t = MessageConfig.ClientTypeCTC, currentid = sendid, receiveid = receiveid,history = historyMsg });
             //将消息推送到当前组 （A和B聊天的组） 同样调用receiveMessage方法
+           
             return Clients.Caller.receiveMessage(msg);
         }
 
