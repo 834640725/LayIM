@@ -69,6 +69,68 @@ namespace LayIM.BLL
             return chatMsg;
         }
 
+        public static List<CSChatMessage> GetHistoryMessage(string sendid,string receiveid)
+        {
+            string groupName = GetGroupName(sendid, receiveid);
+            List<CSChatMessage> historys = new List<CSChatMessage>();
+            //这里历史记录作为demo使用，可以从数据库或者缓存读取
+            historys.Add(new CSChatMessage
+            {
+                fromuser = new CSUser(groupName, null)
+                {
+                    photo = "/photos/000.jpg",
+                    userid = int.Parse(sendid),
+                    username = "发送方的名字"
+                },
+                msg = "这一条是历史记录",
+                msgtype = CSMessageType.Custom,
+                touser = new CSUser(groupName, null)
+                {
+                    photo = "/photos/001.jpg",
+                    userid = int.Parse(receiveid),
+                    username = "接收方的名字"
+                },
+                other = new { t = MessageConfig.ClientTypeCTC }//这里不要忘了加t参数
+            });
+            historys.Add(new CSChatMessage
+            {
+                touser = new CSUser(groupName, null)
+                {
+                    photo = "/photos/000.jpg",
+                    userid = int.Parse(sendid),
+                    username = "发送方的名字"
+                },
+                msg = "这一条是历史记录",
+                msgtype = CSMessageType.Custom,
+                fromuser = new CSUser(groupName, null)
+                {
+                    photo = "/photos/001.jpg",
+                    userid = int.Parse(receiveid),
+                    username = "接收方的名字"
+                },
+                other = new { t = MessageConfig.ClientTypeCTC }//这里不要忘了加t参数
+            });
+            historys.Add(new CSChatMessage
+            {
+                fromuser = new CSUser(groupName, null)
+                {
+                    photo = "/photos/000.jpg",
+                    userid = int.Parse(sendid),
+                    username = "发送方的名字"
+                },
+                msg = "这一条是历史记录",
+                msgtype = CSMessageType.Custom,
+                touser = new CSUser(groupName, null)
+                {
+                    photo = "/photos/001.jpg",
+                    userid = int.Parse(receiveid),
+                    username = "接收方的名字"
+                },
+                other = new { t = MessageConfig.ClientTypeCTC }//这里不要忘了加t参数
+            });
+            return historys;
+        }
+
         #endregion
 
         /// <summary>

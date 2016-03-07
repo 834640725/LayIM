@@ -66,7 +66,8 @@
             //单人聊天
             ctoc: function (sid, rid,t) {
                 //调用hub的clientToClient方法
-                if (!chat.isConnected(rid,t)) {
+                 if (!chat.isConnected(rid,t)) {
+                   
                     //如果没有连接过，进行连接
                     console.log("用户 " + rid + "没有连接过...");
                     if (t == 'one') {
@@ -129,6 +130,14 @@
             } else {
                 this.cacheGroup[result.other.receiveid] = "ok";
             }
+            //然后在这里处理历史记录 2016-3-7
+            if (result.other.history && result.other.history.length) {
+                $(result.other.history).each(function (i,item) {
+                    //追加消息
+                    console.log(item);
+                    chat.handleCustomMsg(item);
+                });
+            }
         },
         handleCustomMsg: function (result) {
             var log = {};
@@ -176,7 +185,11 @@
             ///单人聊天
             if (t == 'one') {
                 console.log(this.cache);
-                return this.cache[rid] === "ok";
+                /*2016-3-7修改
+                  增加聊天框的判断，如果聊天框被关闭了，需要重新连接，用来读取历史记录
+                */
+                var chatbox = $('#layim_areaone' + rid);
+                return this.cache[rid] === "ok" && chatbox.length > 0;
             }
             //群组聊天
             if (t == 'group') {

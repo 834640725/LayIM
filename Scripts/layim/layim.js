@@ -606,13 +606,12 @@
                         + '<span class="xxim_setoffline"><i class="fa fa-check-circle"></i>隐身</span>'
                     + '</div>'
                 + '</li>'
-                //+ '<li class="xxim_mymsg" id="xxim_mymsg" title="我的私信"><i class="fa fa-comment"></i><a href="' + config.msgurl + '" target="_blank"></a></li>'
-              //  + '<li class="xxim_seter" id="xxim_seter" title="设置">'
-                 //   + '<i class="fa fa-gear"></i>'
-                 //   + '<div>'
-
-                //    + '</div>'
-               // + '</li>'
+                + '<li class="xxim_mymsg" id="xxim_mymsg" title="我的私信"><i class="fa fa-comment"></i><a href="' + config.msgurl + '" target="_blank"></a></li>'
+                + '<li class="xxim_seter" id="xxim_seter" title="设置">'
+                    + '<i class="fa fa-gear"></i>'
+                    + '<div>'
+                    + '</div>'
+                + '</li>'
                 + '<li class="xxim_hide" id="xxim_hide"><i class="fa fa-exchange"></i></li>'
                 + '<li id="xxim_on" class="xxim_icon xxim_on fa fa-ellipsis-v"></li>'
                 + '<div class="layim_min" id="layim_min"></div>'
@@ -625,8 +624,37 @@
         xxim.event();
         xxim.layinit();
     }());
+
+
     //将currentUser公开到外部
     var currentUser = config.user;
+    currentUser.getDatas = function (index) {
+        xxim.getDates(index);
+    }
+    currentUser.popChatBox = function (id, name, photo) {
+
+           csClient.server.ctoc(config.user.id, id, 'one');
+            var node = xxim.node, dataId = othis.attr('data-id'), param = {
+                id: id, //用户ID
+                type:'one',
+                name: name,  //用户名
+                face: photo,  //用户头像
+                href: '/web/zhuanjiaxinxi.aspx?id='+id //用户主页
+            }, key = param.type + dataId;
+            if (!config.chating[key]) {
+                xxim.popchat(param);
+                config.chatings++;
+            } else {
+                xxim.tabchat(param);
+            }
+            config.chating[key] = param;
+
+            var chatbox = $('#layim_chatbox');
+            if (chatbox[0]) {
+                node.layimMin.hide();
+                chatbox.parents('.xubox_layer').show();
+            }
+    }
     window.currentUser = currentUser;
 }(window);
 

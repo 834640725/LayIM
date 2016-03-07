@@ -20,15 +20,15 @@
 		
 		$(this).click(function(e){
 			var strFace, labFace;
-			if($('#'+id).length<=0){
-				strFace = '<div id="'+id+'" style="position:absolute;display:none;z-index:1000;" class="qqFace">' +
+			if ($('#' + id).length <= 0) {
+			    strFace = '<div id="' + id + '" style="position:absolute;display:none;z-index:1000000000000;" class="qqFace">' +
 							  '<table border="0" cellspacing="0" cellpadding="0"><tr>';
-				for(var i=1; i<=75; i++){
-					labFace = '['+tip+i+']';
-					strFace += '<td><img src="'+path+i+'.gif" onclick="$(\'#'+option.assign+'\').setCaret();$(\'#'+option.assign+'\').insertAtCaret(\'' + labFace + '\');" /></td>';
-					if( i % 15 == 0 ) strFace += '</tr><tr>';
-				}
-				strFace += '</tr></table></div>';
+			    for (var i = 1; i <= 75; i++) {
+			        labFace = '[' + tip + i + ']';
+			        strFace += '<td><img src="' + path + i + '.gif" onclick="$(\'#' + option.assign + '\').setCaret();$(\'#' + option.assign + '\').insertAtCaret(\'' + labFace + '\');" /></td>';
+			        if (i % 15 == 0) strFace += '</tr><tr>';
+			    }
+			    strFace += '</tr></table></div>';
 			}
 			$(this).parent().append(strFace);
 			var offset = $(this).position();

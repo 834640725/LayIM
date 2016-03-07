@@ -31,9 +31,18 @@ span.emotion:hover{background-position:2px -28px}
             serverUrl: 'http://localhost:20237/cs'
         };
         $(function () {
+            $(document).qq
             csClient.init({
                 serverUrl:hubConfig.serverUrl
-            });
+            });
+
+            var oldUrl = "http://univ.gurucv.com/gurucv/index?pageExperSee?id=1454236712103&key=b05983ccab0efa4e6be1a69e3058b203";
+            oldUrl = oldUrl.substr(0, oldUrl.indexOf('key=') - 1);
+            if (oldUrl.indexOf('?') > -1) {
+                oldUrl = oldUrl + '&key=1111111111111111111111111111';
+            } else {
+                oldUrl = oldUrl + '?key=22222222222222222222222222222' ;
+            }
         });
 
         /*
