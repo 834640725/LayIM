@@ -135,7 +135,7 @@
                 $(result.other.history).each(function (i,item) {
                     //追加消息
                     console.log(item);
-                    chat.handleCustomMsg(item);
+                    chat.handleCustomMsg(item);//每一个item就是一条消息，这里格式是通用的，所以，直接调用 handleCustomMsg方法就可以了。
                 });
             }
         },
@@ -149,6 +149,12 @@
             log.imarea = $('#layim_area' + keys);//layim_areaone0
             if (!log.imarea.length) {
                 log.imarea = $('#layim_area' + keys1);//layim_areaone0
+            }
+            if (!log.imarea.length) {
+                //这里只有在连接过一次之后，并且关闭消息框才会提示
+                if (result.touser.userid == hubConfig.currentUser.id) {
+                    alert("您收到消息啦...");
+                }
             }
             //拼接html模板
             log.html = function (param, type) {
@@ -179,7 +185,9 @@
                 content: replace_em(result.msg)
             }, type));
             //滚动条处理
-            log.imarea.scrollTop(log.imarea[0].scrollHeight);
+            if (log.imarea.length) {
+                log.imarea.scrollTop(log.imarea[0].scrollHeight);
+            }
         },
         isConnected: function (rid, t) {
             ///单人聊天
