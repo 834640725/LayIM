@@ -91,4 +91,3 @@ D:\Project\范月盘非工作项目汇总\LayIM\bin\Microsoft.AspNet.SignalR.Cor
 D:\Project\范月盘非工作项目汇总\LayIM\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
 D:\Project\范月盘非工作项目汇总\LayIM\bin\zh-Hans\Microsoft.AspNet.SignalR.Core.resources.dll
 D:\Project\范月盘非工作项目汇总\LayIM\bin\zh-Hans\Microsoft.AspNet.SignalR.SystemWeb.resources.dll
-D:\Project\范月盘非工作项目汇总\LayIM\obj\Debug\LayIM.csprojResolveAssemblyReference.cache
